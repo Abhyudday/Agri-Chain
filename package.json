@@ -1,0 +1,34 @@
+{
+  "name": "agricultural-supply-chain",
+  "version": "1.0.0",
+  "description": "Blockchain-based supply chain tracking for agricultural products",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run frontend\" \"npm run hardhat\"",
+    "frontend": "cd frontend && npm start",
+    "hardhat": "npx hardhat node",
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia"
+  },
+  "keywords": [
+    "blockchain",
+    "supply-chain",
+    "agriculture",
+    "solidity",
+    "react"
+  ],
+  "author": "Supply Chain Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "concurrently": "^8.2.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.8.0"
+  }
+}
