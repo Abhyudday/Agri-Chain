@@ -1,0 +1,72 @@
+# Vercel Ignore File - Optimize deployment by excluding unnecessary files
+
+# Development files
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation (optional - remove if you want docs deployed)
+*.md
+!README.md
+*.txt
+*.pdf
+*.tex
+
+# Hardhat blockchain development
+hardhat/
+contracts/
+scripts/
+test/
+artifacts/
+cache/
+hardhat.config.js
+
+# Node modules (will be installed during build)
+node_modules/
+frontend/node_modules/
+
+# Build artifacts (will be generated)
+frontend/build/
+frontend/.eslintcache
+
+# Environment files (use Vercel environment variables instead)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Git
+.git/
+.gitignore
+
+# Package locks (npm ci will use package-lock.json)
+# Uncomment if you want to force fresh installs
+# package-lock.json
+# frontend/package-lock.json
+
+# Temporary files
+*.tgz
+*.tar.gz
+
+# Coverage reports
+coverage/
+frontend/coverage/
+
+# Storybook
+.storybook/
+storybook-static/
+
+# Testing
+__tests__/
+*.test.js
+*.spec.js
