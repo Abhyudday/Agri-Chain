@@ -20,8 +20,8 @@ module.exports = {
       url: process.env.SEPOLIA_RPC_URL || `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}` || `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY.startsWith('0x') ? process.env.PRIVATE_KEY : `0x${process.env.PRIVATE_KEY}`] : [],
       chainId: 11155111,
-      gas: 2100000,
-      gasPrice: 8000000000
+      gas: 1000000,
+      gasPrice: 1000000000
     }
   },
   paths: {

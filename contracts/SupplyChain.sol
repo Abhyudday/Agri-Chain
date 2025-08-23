@@ -24,6 +24,13 @@ contract SupplyChain is Ownable {
         string location;
     }
     
+    struct LocationUpdate {
+        string location;
+        uint256 timestamp;
+        address updatedBy;
+        string notes;
+    }
+    
     struct ComplianceRecord {
         uint256 productId;
         string claimType; // e.g., "organic", "fair-trade", "gmo-free"
@@ -36,12 +43,14 @@ contract SupplyChain is Ownable {
     mapping(uint256 => Product) public products;
     mapping(uint256 => IoTData[]) public productIoTData;
     mapping(uint256 => ComplianceRecord[]) public productCompliance;
+    mapping(uint256 => LocationUpdate[]) private productLocationHistory;
     mapping(address => bool) public authorizedVerifiers;
     
     event ProductRegistered(uint256 indexed productId, string name, address farmer);
     event IoTDataAdded(uint256 indexed productId, uint256 temperature, uint256 humidity);
     event ComplianceVerified(uint256 indexed productId, string claimType, bool verified);
     event VerifierAdded(address verifier);
+    event LocationUpdated(uint256 indexed productId, string location, address indexed updatedBy, string notes);
     
     constructor() Ownable(msg.sender) {
         // Add the contract deployer as the first authorized verifier
@@ -103,6 +112,27 @@ contract SupplyChain is Ownable {
         
         emit IoTDataAdded(_productId, _temperature, _humidity);
     }
+
+    // Update product location (verifiers only). Also records history and updates current product location.
+    function updateProductLocation(
+        uint256 _productId,
+        string memory _newLocation,
+        string memory _notes
+    ) external onlyAuthorizedVerifier {
+        require(products[_productId].isActive, "Product not found or inactive");
+        
+        productLocationHistory[_productId].push(LocationUpdate({
+            location: _newLocation,
+            timestamp: block.timestamp,
+            updatedBy: msg.sender,
+            notes: _notes
+        }));
+        
+        // Update current location on the product
+        products[_productId].location = _newLocation;
+        
+        emit LocationUpdated(_productId, _newLocation, msg.sender, _notes);
+    }
     
     function verifyCompliance(
         uint256 _productId,
@@ -134,6 +164,14 @@ contract SupplyChain is Ownable {
     
     function getProductCompliance(uint256 _productId) external view returns (ComplianceRecord[] memory) {
         return productCompliance[_productId];
+    }
+    
+    function getProductLocationHistory(uint256 _productId) external view returns (LocationUpdate[] memory) {
+        return productLocationHistory[_productId];
+    }
+    
+    function getCurrentLocation(uint256 _productId) external view returns (string memory) {
+        return products[_productId].location;
     }
     
     function getCurrentProductId() external view returns (uint256) {
